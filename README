@@ -1,0 +1,16 @@
+These scripts were written to maintain consistent user credentials in computer
+classroom (cluster). LDAP turned out to be an overkill for an environment,
+where the users set up passwords once in a few months and then just want to
+have the same password on every node.
+
+pwsend.py can be run as a deamon on the server, where the users change their
+passwords. It listens for connections from the local network and sends content
+of passwd, shadow and group files, when requested.
+
+pwreceive.py can be run periodically as a cron job in the terminals, so that it
+updates local files with data from the server.
+
+Set up and operation:
+* symmetric key encryption is used; generate private key and put it in both scripts as secretKey
+* to avoid heavy traffic, the pwreceive.py script uses small random delay before the connection is done
+* Only entries for PIDs in the range [1000,65000] are exchanged.
